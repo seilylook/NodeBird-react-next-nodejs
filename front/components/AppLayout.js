@@ -18,12 +18,12 @@ const AppLayout = ({ children }) => {
   return (
     <div>
       <Menu mode='horizontal'>
-        <Menu.Item>
+        <Menu.Item key='home'>
           <Link href='/'>
             <a>NodeBird</a>
           </Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key='profile'>
           <Link href='/profile'>
             <a>프로필</a>
           </Link>
@@ -58,7 +58,6 @@ const AppLayout = ({ children }) => {
           </a>
         </Col>
       </Row>
-      {children}
     </div>
   );
 };

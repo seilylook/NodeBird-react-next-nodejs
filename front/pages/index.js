@@ -1,7 +1,7 @@
 import React from 'react';
 import AppLayout from '../components/AppLayout';
 
-const home = () => {
+const Home = () => {
   return (
     <div>
       <AppLayout></AppLayout>
@@ -9,4 +9,4 @@ const home = () => {
   );
 };
 
-export default home;
+export default Home;
