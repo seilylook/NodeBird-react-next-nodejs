@@ -29,7 +29,7 @@ const UserProfile = ({ setIsloggedIn }) => {
       ]}
     >
       <Card.Meta avatar={<Avatar>SL</Avatar>} title='seilylook'></Card.Meta>
-      <ButtonWrapper onSubmit={onLogout}>로그아웃</ButtonWrapper>
+      <ButtonWrapper onClick={onLogout}>로그아웃</ButtonWrapper>
     </Card>
   );
 };
