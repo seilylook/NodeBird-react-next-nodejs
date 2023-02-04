@@ -7,7 +7,7 @@ const ButtonWrapper = styled.div`
   margin-top: 10px;
 `;
 
-const LoginForm = () => {
+const LoginForm = ({ setIsLoggedIn }) => {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,8 +19,14 @@ const LoginForm = () => {
     setPassword(e.target.value);
   }, []);
 
+  // onFinish는 이미 preventDefault() 리렌더링을 막아주는 함수가 내장되어 있다.
+  const onSubmitForm = useCallback(() => {
+    console.log(id, password);
+    setIsLoggedIn(true);
+  }, [id, password]);
+
   return (
-    <Form>
+    <Form onFinish={onSubmitForm}>
       <div>
         <label htmlFor='user_id'>아이디</label>
         <br />
