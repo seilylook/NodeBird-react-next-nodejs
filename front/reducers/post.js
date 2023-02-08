@@ -16,7 +16,6 @@ export const initialState = {
         {
           src: 'https://img.hankyung.com/photo/201903/AA.19067065.1.jpg',
         },
-
         {
           src: 'https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg',
         },

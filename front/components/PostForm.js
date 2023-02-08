@@ -35,7 +35,7 @@ const PostForm = () => {
         maxLength={140}
         placeholder='어떤 일이 있었나요?'
       />
-      <div>
+      <div style={{ marginBottom: 10 }}>
         <input
           type='file'
           multiple
