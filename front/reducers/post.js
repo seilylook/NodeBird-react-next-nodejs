@@ -11,13 +11,13 @@ export const initialState = {
       content: '첫 번째 게시글 #해시태크 #익스프레스',
       Images: [
         {
-          src: 'http://monthly.chosun.com/up_fd/Mdaily/2017-09/bimg_thumb/2017042000056_0.jpg',
+          src: 'https://cdn.pixabay.com/photo/2018/02/02/23/27/office-3126597__480.jpg',
         },
         {
-          src: 'https://img.hankyung.com/photo/201903/AA.19067065.1.jpg',
+          src: 'https://cdn.pixabay.com/photo/2018/02/02/22/49/still-life-3126536__480.jpg',
         },
         {
-          src: 'https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg',
+          src: 'https://cdn.pixabay.com/photo/2017/11/06/11/49/texture-2923443__480.jpg',
         },
       ],
       Comments: [
