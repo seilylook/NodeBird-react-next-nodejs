@@ -43,8 +43,14 @@ const PostForm = () => {
           ref={imageInput}
           style={{ display: 'none' }}
         />
-        <Button onClick={onClickImageUpload}>이미지 업로드</Button>
-        <Button type='primary' style={{ float: 'right' }} htmlType='submit'>
+        <Button onClick={onClickImageUpload} style={{ marginTop: 5 }}>
+          이미지 업로드
+        </Button>
+        <Button
+          type='primary'
+          style={{ float: 'right', marginTop: 5 }}
+          htmlType='submit'
+        >
           업로드
         </Button>
       </div>
