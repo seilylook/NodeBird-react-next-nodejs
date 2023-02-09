@@ -40,20 +40,20 @@ export const initialState = {
   postAdded: false,
 };
 
-const ADD_POST = 'ADD_POST';
-export const addPost = {
-  type: 'ADD_POST',
-};
-
 const dummyPost = {
   id: 2,
-  content: 'dummy data',
   User: {
     id: 1,
     nickname: 'kim se hyeon',
   },
+  content: 'dummy data',
   Images: [],
   Comments: [],
+};
+
+const ADD_POST = 'ADD_POST';
+export const addPost = {
+  type: 'ADD_POST',
 };
 
 const reducer = (state = initialState, action) => {
