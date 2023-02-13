@@ -11,7 +11,7 @@ const ButtonWrapper = styled(Button)`
 
 const UserProfile = () => {
   const dispatch = useDispatch();
-  const { me, isLoggingOut } = useSelector((state) => state.user);
+  const { me, logOutLoading } = useSelector((state) => state.user);
 
   const onLogout = useCallback(() => {
     dispatch(logoutRequestAction());
@@ -23,14 +23,17 @@ const UserProfile = () => {
         <div key='twit'>
           띠링
           <br />
+          {me.Posts.length}
         </div>,
         <div key='followings'>
           팔로잉
           <br />
+          {me.Followings.length}
         </div>,
         <div key='followers'>
           팔로워
           <br />
+          {me.Followers.length}
         </div>,
       ]}
     >
@@ -38,7 +41,7 @@ const UserProfile = () => {
         avatar={<Avatar>{me.nickname[0]}</Avatar>}
         title={me.nickname}
       ></Card.Meta>
-      <ButtonWrapper onClick={onLogout} loading={isLoggingOut}>
+      <ButtonWrapper onClick={onLogout} loading={logOutLoading}>
         로그아웃
       </ButtonWrapper>
     </Card>
