@@ -1,10 +1,9 @@
 import { useState, useCallback } from 'react';
 
-export default (initialValue = null) => {
-  const [value, setValue, onChangeText] = useState(initialValue);
+export default (initValue = null) => {
+  const [value, setter] = useState(initValue);
   const handler = useCallback((e) => {
-    setValue(e.target.value);
+    setter(e.target.value);
   }, []);
-
-  return [value, handler, onChangeText];
+  return [value, handler, setter];
 };
