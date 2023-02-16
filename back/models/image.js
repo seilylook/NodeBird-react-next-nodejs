@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
     'Image',
     {
       src: {
-        type: String,
+        type: DataTypes.STRING(200),
+        allowNull: false,
       },
     },
     {
@@ -11,6 +12,8 @@ module.exports = (sequelize, DataTypes) => {
       collate: 'utf8-general-ci',
     }
   );
-  Image.associate = (db) => {};
+  Image.associate = (db) => {
+    db.Image.belongsTo(db.Post);
+  };
   return Image;
 };
