@@ -6,7 +6,12 @@ const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const path = require('path');
+
 const db = require('./models');
+const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
+
+const app = express();
 
 db.sequelize
   .sync()
@@ -15,13 +20,18 @@ db.sequelize
   })
   .catch(console.error);
 
-const app = express();
-
 app.use(morgan('dev'));
+app.use(
+  cors({
+    origin: 'http://localhost:3060',
+    credentials: true,
+  })
+);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.send('hello express');
-});
+app.use('/post', postRouter);
+app.use('/user', userRouter);
 
 app.listen(3065, () => {
   console.log('서버 실행 중');
