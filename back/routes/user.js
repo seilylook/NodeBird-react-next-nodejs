@@ -28,6 +28,12 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 
+router.post('/logout', (req, res, next) => {
+  req.logout();
+  req.session.destroy();
+  res.status(200).send('ok');
+});
+
 router.post('/', async (req, res, next) => {
   try {
     const exUser = await User.findOne({
