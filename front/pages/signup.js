@@ -1,13 +1,14 @@
 import React, { useCallback, useState, useEffect } from 'react';
-import Head from 'next/head';
-import { Form, Input, Checkbox, Button } from 'antd';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import useInput from '../hooks/useInput';
+import { SIGN_UP_REQUEST } from '../reducers/user';
+
+import Head from 'next/head';
 import Router from 'next/router';
 
 import AppLayout from '../components/AppLayout';
-import useInput from '../hooks/useInput';
-import { SIGN_UP_REQUEST } from '../reducers/user';
+import { Form, Input, Checkbox, Button } from 'antd';
+import styled from 'styled-components';
 
 const ErrorMessage = styled.div`
   color: red;
@@ -67,7 +68,7 @@ const Signup = () => {
     if (!term) {
       return setTermError(true);
     }
-    console.log(email, nickname, password);
+
     dispatch({
       type: SIGN_UP_REQUEST,
       data: { email, password, nickname },

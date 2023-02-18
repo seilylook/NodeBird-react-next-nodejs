@@ -8,10 +8,13 @@ const morgan = require('morgan');
 const path = require('path');
 
 const db = require('./models');
+const passportConfig = require('./passport');
+
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 
 const app = express();
+passportConfig();
 
 db.sequelize
   .sync()
@@ -29,6 +32,9 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use('/post', postRouter);
 app.use('/user', userRouter);
