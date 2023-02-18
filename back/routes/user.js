@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const { User } = require('../models');
+const { User, Post } = require('../models');
 const passport = require('passport');
 
 const router = express.Router();
@@ -23,15 +23,34 @@ router.post('/login', (req, res, next) => {
         return next(loginErr);
       }
       // 로그인 성공시 json 형태로 사용자 정보를 front로 넘겨준다.
-      return res.status(200).json(user);
+      const fullUserWithoutPassword = await User.findOne({
+        where: { id: user.id },
+        attributes: {
+          exclude: ['password'],
+        },
+        include: [
+          {
+            model: Post,
+          },
+          {
+            model: User,
+            as: 'Followings',
+          },
+          {
+            model: User,
+            as: 'Followers',
+          },
+        ],
+      });
+      return res.status(200).json(fullUserWithoutPassword);
     });
   })(req, res, next);
 });
 
 router.post('/logout', (req, res, next) => {
-  req.logout();
+  req.logout(() => {});
   req.session.destroy();
-  res.status(200).send('ok');
+  res.send('ok');
 });
 
 router.post('/', async (req, res, next) => {

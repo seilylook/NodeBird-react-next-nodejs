@@ -1,6 +1,6 @@
 const passport = require('passport');
 const local = require('./local');
-const { User } = require('../models');
+const { User, Post } = require('../models');
 
 module.exports = () => {
   // 유저 정보 중에 id, cookie랑 묶어서 저장해주는 것
@@ -15,11 +15,6 @@ module.exports = () => {
         where: {
           id,
         },
-        include: [
-          {
-            model: Post,
-          },
-        ],
       });
 
       done(null, user);

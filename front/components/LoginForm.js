@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Router from 'next/router';
 
 import Link from 'next/link';
 import { Form, Input, Button } from 'antd';
@@ -20,13 +21,19 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
-  const { logInLoading } = useSelector((state) => state.user);
+  const { logInLoading, logInError } = useSelector((state) => state.user);
 
   // onFinish는 이미 preventDefault() 리렌더링을 막아주는 함수가 내장되어 있다.
   const onSubmitForm = useCallback(() => {
     console.log(email, password);
     dispatch(loginRequestAction({ email, password }));
   }, [email, password]);
+
+  useEffect(() => {
+    if (logInError) {
+      alert(logInError);
+    }
+  }, [logInError]);
 
   return (
     <FormWrapper onFinish={onSubmitForm}>

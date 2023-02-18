@@ -19,6 +19,7 @@ module.exports = () => {
           });
 
           if (!user) {
+            // null: 서버에러, false: 성공 여부, reason: 프론트 에러
             return done(null, false, { reason: '존재하지 않는 이메일입니다.' });
           }
 
