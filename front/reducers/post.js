@@ -128,7 +128,7 @@ const reducer = (state = initialState, action) => {
       case ADD_POST_SUCCESS:
         draft.addPostLoading = false;
         draft.addPostDone = true;
-        draft.mainPosts.unshift(dummyPost(action.data));
+        draft.mainPosts.unshift(action.data);
         break;
 
       case ADD_POST_FAILURE:
@@ -162,9 +162,9 @@ const reducer = (state = initialState, action) => {
       // immer 사용해서 불변성 지켜주기
       case ADD_COMMENT_SUCCESS:
         // post = mainPosts에서 작성한 ID 찾기
-        const post = draft.mainPosts.find((v) => v.id === action.data.postId);
+        const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
         // post index의 Comments / content = action.data.content 넣기
-        post.Comments.unshift(dummyComment(action.data.content));
+        post.Comments.unshift(action.data);
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;

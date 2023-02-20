@@ -19,7 +19,7 @@ import {
 import axios from 'axios';
 
 function logInAPI(data) {
-  return axios.post('/user/login', data);
+  return axios.post('/user/login', data, { withCredentials: true });
 }
 
 function* logIn(action) {
@@ -39,7 +39,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post('/user/logout');
+  return axios.post('/user/logout', { withCredentials: true });
 }
 
 function* logOut() {
