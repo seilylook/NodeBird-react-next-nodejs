@@ -24,9 +24,18 @@ router.post('/', isLoggedIn, async (req, res, next) => {
         },
         {
           model: Comment,
+          include: [
+            {
+              // 댓글 작성자
+              model: User,
+              attributes: ['id', 'nickname'],
+            },
+          ],
         },
         {
+          // 게시글 작성자
           model: User,
+          attributes: ['id', 'nickname'],
         },
       ],
     });
