@@ -7,6 +7,7 @@ const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const router = express.Router();
 
 // GET /user
+// 로그인 정보 불러오기(로그인 유지)
 router.get('/', async (req, res, next) => {
   try {
     if (req.user) {
@@ -43,6 +44,8 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// POST /user/login
+// 로그인
 router.post('/login', isNotLoggedIn, (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) {
@@ -88,12 +91,16 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
   })(req, res, next);
 });
 
+// POST /user/logout
+// 로그아웃
 router.post('/logout', isLoggedIn, (req, res, next) => {
   req.logout(() => {});
   req.session.destroy();
   res.send('ok');
 });
 
+// POST /user/
+// 회원가입
 router.post('/', isNotLoggedIn, async (req, res, next) => {
   try {
     const exUser = await User.findOne({

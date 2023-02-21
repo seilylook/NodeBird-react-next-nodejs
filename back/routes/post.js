@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 const { User, Post, Comment, Image } = require('../models');
-const { findOne } = require('../models/comment');
 const { isLoggedIn } = require('./middlewares');
 
 // from app.use('/post', postRouter);
 // POST /post
+// 게시글 작성
 router.post('/', isLoggedIn, async (req, res, next) => {
   try {
     const newPost = await Post.create({
@@ -48,6 +48,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 
 // from app.use('/post', postRouter)
 // POST /post/id/comment
+// 게시글의 댓글 작성
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
   try {
     const post = await Post.findOne({

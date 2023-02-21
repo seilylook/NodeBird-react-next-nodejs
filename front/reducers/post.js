@@ -1,9 +1,7 @@
 // 나중에 DB에서 데이터를 받아올 때
 // sequelize를 통한 참조 관계 데이터는 대문자로 변수명 설정
 
-import shortId from 'shortid';
 import produce from 'immer';
-import faker from 'faker';
 
 // initialState -> mainPosts[id, User: {id, nickname}, content, Images, Comments]
 export const initialState = {
@@ -25,31 +23,6 @@ export const initialState = {
 };
 
 // initialState -> mainPosts[id, User: {id, nickname}, content, Images, Comments: {id, User: {id, nickname}, content}]
-export const generateDummyPost = (number) =>
-  Array(number)
-    .fill()
-    .map(() => ({
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: faker.name.findName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [
-        {
-          src: faker.image.image(),
-        },
-      ],
-      Comments: [
-        {
-          User: {
-            id: shortId.generate(),
-            nickname: faker.name.findName(),
-          },
-          content: faker.lorem.sentence(),
-        },
-      ],
-    }));
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -77,26 +50,6 @@ export const addComment = (data) => ({
   data,
 });
 
-const dummyPost = (data) => ({
-  id: data.id,
-  User: {
-    id: 1,
-    nickname: 'seilylook',
-  },
-  content: data.content,
-  Images: [],
-  Comments: [],
-});
-
-const dummyComment = (data) => ({
-  id: shortId.generate(),
-  content: data,
-  User: {
-    id: 1,
-    nickname: 'seilylook',
-  },
-});
-
 // reducer: 이전 상태를 액션을 통해 다음 상태로 만들어 내느 함수
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
@@ -110,8 +63,8 @@ const reducer = (state = initialState, action) => {
       case LOAD_POSTS_SUCCESS:
         draft.loadPostsLoading = false;
         draft.loadPostsDone = true;
-        draft.mainPosts = action.data.concat(draft.mainPosts);
-        draft.hasMorePosts = draft.mainPosts.length < 50;
+        draft.mainPosts = draft.mainPosts.concat(action.data);
+        draft.hasMorePosts = action.data.length === 10;
         break;
 
       case LOAD_POSTS_FAILURE:
