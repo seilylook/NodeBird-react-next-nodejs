@@ -15,6 +15,7 @@ router.get('/', async (req, res, next) => {
       ],
       include: [
         {
+          // 모든 게시물의 작성자 정보
           model: User,
           attributes: ['id', 'nickname'],
         },
@@ -22,6 +23,7 @@ router.get('/', async (req, res, next) => {
           model: Image,
         },
         {
+          // 댓글 작성자의 정보
           model: Comment,
           include: [
             {
@@ -29,6 +31,12 @@ router.get('/', async (req, res, next) => {
               attributes: ['id', 'nickname'],
             },
           ],
+        },
+        {
+          // 좋아요 누른 사람 정보
+          model: User,
+          as: 'Likers',
+          attributes: ['id'],
         },
       ],
     });
