@@ -5,6 +5,7 @@ const router = express.Router();
 
 // from app.use('/posts/, postsRouter);
 // GET /posts
+// 모든 게시글 조회
 router.get('/', async (req, res, next) => {
   try {
     const posts = await Post.findAll({
