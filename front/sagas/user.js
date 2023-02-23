@@ -25,7 +25,7 @@ import {
 import axios from 'axios';
 
 function logInAPI(data) {
-  return axios.post('/user/login', data, { withCredentials: true });
+  return axios.post('/user/login', data);
 }
 
 function* logIn(action) {
@@ -45,7 +45,7 @@ function* logIn(action) {
 }
 
 function logOutAPI() {
-  return axios.post('/user/logout', { withCredentials: true });
+  return axios.post('/user/logout');
 }
 
 function* logOut() {
@@ -75,6 +75,7 @@ function* signUp(action) {
       type: SIGN_UP_SUCCESS,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: SIGN_UP_FAILURE,
       error: err.response.data,
@@ -92,13 +93,14 @@ function loadMyInfoAPI() {
 
 function* loadMyInfo(action) {
   try {
-    const result = yield call(loadMyInfoAPI);
+    const result = yield call(loadMyInfoAPI, action.data);
 
     yield put({
       type: LOAD_MY_INFO_SUCCESS,
       data: result.data,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: LOAD_MY_INFO_FAILURE,
       error: err.response.data,

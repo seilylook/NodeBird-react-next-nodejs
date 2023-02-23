@@ -1,12 +1,4 @@
-import {
-  all,
-  delay,
-  fork,
-  takeLatest,
-  put,
-  throttle,
-  call,
-} from 'redux-saga/effects';
+import { all, fork, takeLatest, put, throttle, call } from 'redux-saga/effects';
 import {
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
@@ -29,16 +21,14 @@ import {
 } from '../reducers/post';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 import axios from 'axios';
-import shortId from 'shortid';
 
-function loadPostsAPI(data) {
-  return axios.get('/posts', data);
+function loadPostsAPI(lastId) {
+  return axios.get(`/posts?lastId=${lastId || 0}`);
 }
 
 function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI, action.data);
-
+    const result = yield call(loadPostsAPI, action.lastId);
     yield put({
       type: LOAD_POSTS_SUCCESS,
       data: result.data,
@@ -47,20 +37,18 @@ function* loadPosts(action) {
     console.error(err);
     yield put({
       type: LOAD_POSTS_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
 
 function addPostAPI(data) {
-  return axios.post('/post', { content: data });
+  return axios.post('/post', data);
 }
 
 function* addPost(action) {
   try {
     const result = yield call(addPostAPI, action.data);
-
-    const id = shortId.generate();
     yield put({
       type: ADD_POST_SUCCESS,
       data: result.data,
@@ -73,19 +61,18 @@ function* addPost(action) {
     console.error(err);
     yield put({
       type: ADD_POST_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
 
 function addCommentAPI(data) {
-  return axios.post(`/post/${data.postId}/comment`, data);
+  return axios.post(`/post/${data.postId}/comment`, data); // POST /post/1/comment
 }
 
 function* addComment(action) {
   try {
     const result = yield call(addCommentAPI, action.data);
-
     yield put({
       type: ADD_COMMENT_SUCCESS,
       data: result.data,
@@ -94,19 +81,18 @@ function* addComment(action) {
     console.error(err);
     yield put({
       type: ADD_COMMENT_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
 
 function removePostAPI(data) {
-  return axios.delete(`/post/${data}/delete`);
+  return axios.delete(`/post/${data}`);
 }
 
 function* removePost(action) {
   try {
     const result = yield call(removePostAPI, action.data);
-
     yield put({
       type: REMOVE_POST_SUCCESS,
       data: result.data,
@@ -119,7 +105,7 @@ function* removePost(action) {
     console.error(err);
     yield put({
       type: REMOVE_POST_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -169,7 +155,7 @@ function* unlikePost(action) {
 }
 
 function* watchLoadPosts() {
-  yield throttle(4000, LOAD_POSTS_REQUEST, loadPosts);
+  yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
 
 function* watchAddPost() {

@@ -9,15 +9,13 @@ const { isLoggedIn } = require('./middlewares');
 // 게시글 작성
 router.post('/', isLoggedIn, async (req, res, next) => {
   try {
-    const newPost = await Post.create({
+    const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
 
     const fullPost = await Post.findOne({
-      where: {
-        id: newPost.id,
-      },
+      where: { id: post.id },
       include: [
         {
           model: Image,
@@ -26,20 +24,17 @@ router.post('/', isLoggedIn, async (req, res, next) => {
           model: Comment,
           include: [
             {
-              // 댓글 작성자
-              model: User,
+              model: User, // 댓글 작성자
               attributes: ['id', 'nickname'],
             },
           ],
         },
         {
-          // 게시글 작성자
-          model: User,
+          model: User, // 게시글 작성자
           attributes: ['id', 'nickname'],
         },
         {
-          // 좋아요 누른 사람
-          model: User,
+          model: User, // 좋아요 누른 사람
           as: 'Likers',
           attributes: ['id'],
         },
