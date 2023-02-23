@@ -11,10 +11,6 @@ import FollowList from '../components/FollowList';
 const Profile = () => {
   const { me } = useSelector((state) => state.user);
 
-  const onClose = (e) => {
-    console.log(e, 'I was closed');
-  };
-
   // 로그인했다가 로그아웃 했을 때
   useEffect(() => {
     if (!(me && me.id)) {

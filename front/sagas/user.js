@@ -115,12 +115,12 @@ function* changeNickname(action) {
     const result = yield call(changeNicknameAPI, action.data);
 
     yield put({
-      type: LOAD_MY_INFO_SUCCESS,
+      type: CHANGE_NICKNAME_SUCCESS,
       data: result.data,
     });
   } catch (err) {
     yield put({
-      type: LOAD_MY_INFO_FAILURE,
+      type: CHANGE_NICKNAME_FAILURE,
       error: err.response.data,
     });
   }
