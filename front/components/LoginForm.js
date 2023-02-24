@@ -25,7 +25,6 @@ const LoginForm = () => {
 
   // onFinish는 이미 preventDefault() 리렌더링을 막아주는 함수가 내장되어 있다.
   const onSubmitForm = useCallback(() => {
-    console.log(email, password);
     dispatch(loginRequestAction({ email, password }));
   }, [email, password]);
 
