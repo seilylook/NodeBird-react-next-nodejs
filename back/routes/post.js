@@ -1,18 +1,62 @@
 const express = require('express');
-const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 const { User, Post, Comment, Image } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
+const router = express.Router();
+
+// 이미지 파일명 저장을 위한 파일 생성 함수 이용
+try {
+  fs.accessSync('uploads');
+} catch (err) {
+  fs.mkdirSync('uploads');
+}
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname); // 확장자 추출(.png, .jpg)
+      const basename = path.basename(file.originalname, ext); // '사진이름'
+      done(null, basename + '_' + new Date().getTime() + ext);
+    },
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 },
+});
+
 // from app.use('/post', postRouter);
 // POST /post
 // 게시글 작성
-router.post('/', isLoggedIn, async (req, res, next) => {
+// req.body.content || req.body.image = 키 값
+router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   try {
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
+
+    if (req.body.image) {
+      // 이미지를 여러개 올리면 images: ['파일이름'.png, '파일이름'.png]
+      if (Array.isArray(req.body.image)) {
+        const images = await Promise.all(
+          req.body.image.map((image) => Image.create({ src: image }))
+        );
+        await post.addImages(images);
+      }
+      // 이미지 하나만 올리면 image: '파일이름'.png
+      else {
+        const image = await Image.create({
+          src: req.body.image,
+        });
+
+        await post.addImages(image);
+      }
+    }
 
     const fullPost = await Post.findOne({
       where: { id: post.id },
@@ -146,6 +190,15 @@ router.delete('/:postId/like', isLoggedIn, async (req, res, next) => {
     console.error(error);
     next(error);
   }
+});
+
+// from app.js ('/post/images')
+// POST /post/images
+// 이미지 업로드
+// upload.array = 여러 장의 사진을 올릴 수 있도록
+router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {
+  console.log(req.files);
+  res.json(req.files.map((v) => v.filename));
 });
 
 module.exports = router;

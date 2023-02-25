@@ -32,6 +32,10 @@ export const initialState = {
   unlikePostLoading: false, // 좋아요 취소
   unlikePostDone: false,
   unlikePostError: null,
+
+  uploadImagesLoading: false, // 이미지 업로드
+  uploadImagesDone: false,
+  uploadImagesError: null,
 };
 
 // initialState -> mainPosts[id, User: {id, nickname}, content, Images, Comments: {id, User: {id, nickname}, content}]
@@ -59,6 +63,12 @@ export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
 export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
+
+export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
+export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
+export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
+
+export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -102,6 +112,7 @@ const reducer = (state = initialState, action) => {
         draft.addPostLoading = false;
         draft.addPostDone = true;
         draft.mainPosts.unshift(action.data);
+        draft.imagePaths = [];
         break;
 
       case ADD_POST_FAILURE:
@@ -192,6 +203,26 @@ const reducer = (state = initialState, action) => {
       case UNLIKE_POST_FAILURE:
         draft.unlikePostLoading = false;
         draft.unlikePostError = action.error;
+        break;
+
+      case UPLOAD_IMAGES_REQUEST:
+        draft.uploadImagesLoading = true;
+        draft.uploadImagesDone = false;
+        draft.uploadImagesError = null;
+        break;
+
+      case UPLOAD_IMAGES_SUCCESS:
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesDone = true;
+        draft.imagePaths = action.data;
+        break;
+
+      case UPLOAD_IMAGES_FAILURE:
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesError = action.error;
+
+      case REMOVE_IMAGE:
+        draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
         break;
 
       default:
