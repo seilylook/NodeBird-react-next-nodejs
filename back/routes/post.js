@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const { User, Post, Comment, Image } = require('../models');
+const { User, Post, Comment, Image, Hashtag } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
@@ -35,10 +35,26 @@ const upload = multer({
 // req.body.content || req.body.image = 키 값
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
   try {
+    const hashtags = req.body.content.match(/(#[^\s#]+)/g);
+
     const post = await Post.create({
       content: req.body.content,
       UserId: req.user.id,
     });
+
+    if (hashtags) {
+      const result = await Promise.all(
+        hashtags.map((tag) =>
+          Hashtag.findOrCreate({
+            where: { name: tag.slice(1).toLowerCase() },
+          })
+        )
+      );
+      // [[React, true], [Nest, true]]
+      // 이처럼 2차원 배열로 만들어진다.
+
+      await post.addHashtags(result.map((v) => v[0]));
+    }
 
     if (req.body.image) {
       // 이미지를 여러개 올리면 images: ['파일이름'.png, '파일이름'.png]
