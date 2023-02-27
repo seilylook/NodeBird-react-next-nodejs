@@ -36,6 +36,10 @@ export const initialState = {
   uploadImagesLoading: false, // 이미지 업로드
   uploadImagesDone: false,
   uploadImagesError: null,
+
+  reTweetLoading: false, // 리트윗 하기
+  reTweetDone: false,
+  reTweetError: null,
 };
 
 // initialState -> mainPosts[id, User: {id, nickname}, content, Images, Comments: {id, User: {id, nickname}, content}]
@@ -69,6 +73,10 @@ export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
+
+export const RETWEET_REQUEST = 'RETWEET_REQUEST';
+export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
+export const RETWEET_FAILURE = 'RETWEET_FAILURE';
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -223,6 +231,23 @@ const reducer = (state = initialState, action) => {
 
       case REMOVE_IMAGE:
         draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
+        break;
+
+      case RETWEET_REQUEST:
+        draft.reTweetLoading = true;
+        draft.reTweetDone = false;
+        draft.reTweetError = null;
+        break;
+
+      case RETWEET_SUCCESS:
+        draft.reTweetLoading = false;
+        draft.reTweetDone = true;
+        draft.mainPosts.unshift(action.data);
+        break;
+
+      case RETWEET_FAILURE:
+        draft.reTweetLoading = false;
+        draft.reTweetError = action.error;
         break;
 
       default:
