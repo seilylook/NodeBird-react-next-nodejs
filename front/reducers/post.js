@@ -8,6 +8,7 @@ export const initialState = {
   mainPosts: [],
   imagePaths: [],
   hasMorePosts: true,
+  singlePost: null,
 
   loadPostsLoading: false, // 모든 게시물 가져오기
   loadPostsDone: false,
@@ -40,6 +41,10 @@ export const initialState = {
   reTweetLoading: false, // 리트윗 하기
   reTweetDone: false,
   reTweetError: null,
+
+  loadPostLoading: false, // 게시물 1개 가져오기
+  loadPostDone: false,
+  loadPostError: null,
 };
 
 // initialState -> mainPosts[id, User: {id, nickname}, content, Images, Comments: {id, User: {id, nickname}, content}]
@@ -77,6 +82,10 @@ export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 export const RETWEET_REQUEST = 'RETWEET_REQUEST';
 export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
 export const RETWEET_FAILURE = 'RETWEET_FAILURE';
+
+export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
+export const LOAD_POST_SUCCESS = 'LOAD_POST_SUCCESS';
+export const LOAD_POST_FAILURE = 'LOAD_POST_FAILURE';
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -248,6 +257,23 @@ const reducer = (state = initialState, action) => {
       case RETWEET_FAILURE:
         draft.reTweetLoading = false;
         draft.reTweetError = action.error;
+        break;
+
+      case LOAD_POST_REQUEST:
+        draft.loadPostLoading = true;
+        draft.loadPostDone = false;
+        draft.loadPostError = null;
+        break;
+
+      case LOAD_POST_SUCCESS:
+        draft.loadPostLoading = false;
+        draft.loadPostDone = true;
+        draft.singlePost = action.data;
+        break;
+
+      case LOAD_POST_FAILURE:
+        draft.loadPostLoading = false;
+        draft.loadPostError = action.error;
         break;
 
       default:
