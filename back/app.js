@@ -14,6 +14,7 @@ const passportConfig = require('./passport');
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
+const hashtagRouter = require('./routes/hashtag');
 
 dotenv.config();
 const app = express();
@@ -51,6 +52,7 @@ app.use(passport.session());
 app.use('/post', postRouter);
 app.use('/posts', postsRouter);
 app.use('/user', userRouter);
+app.use('/hashtag', hashtagRouter);
 
 // 에러 처리 미들우에러가 내부적으로 있다.
 // customize 하고 싶으면 만들어주면 된다.
