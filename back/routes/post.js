@@ -310,7 +310,7 @@ router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
 
 // from app.js('/post/:postId')
 // GET /post/:postId
-// 게시물 1개 가져오기
+// 특정 게시물
 router.get('/:postId', async (req, res, next) => {
   // GET /post/1
   try {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import Head from 'next/head';
 
 import wrapper from '../../store/configureStore';
 import axios from 'axios';
@@ -20,6 +21,24 @@ const Post = () => {
 
   return (
     <AppLayout>
+      <Head>
+        <title>{singlePost.User.nickname}님의 글</title>
+        <meta name='description' content={singlePost.User.content} />
+        <meta
+          property='og:title'
+          content={`${singlePost.User.nickname}님의 게시물`}
+        />
+        <meta property='og:description' content={singlePost.content} />
+        <meta
+          property='og:image'
+          content={
+            singlePost.Images[0]
+              ? singlePost.Images[0].src
+              : 'http://localhost:3060/favicon.ico'
+          }
+        />
+        <meta property='og:url' content={`http://localhost/post/${id}`} />
+      </Head>
       <PostCard post={singlePost}></PostCard>
     </AppLayout>
   );
