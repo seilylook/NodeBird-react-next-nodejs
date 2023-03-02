@@ -64,8 +64,18 @@ const Profile = () => {
       </Head>
       <AppLayout>
         <NicknameEditForm />
-        <FollowList header='팔로잉' data={followingsData} />
-        <FollowList header='팔로워' data={followersData} />
+        <FollowList
+          header='팔로잉'
+          data={followingsData}
+          onClickMore={loadMoreFollowings}
+          loading={!followingsData || !followersData}
+        />
+        <FollowList
+          header='팔로워'
+          data={followersData}
+          onClickMore={loadMoreFollowers}
+          loading={!followersData || !followingsData}
+        />
       </AppLayout>
     </>
   );
