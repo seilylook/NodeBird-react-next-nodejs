@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react';
 import propTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import useInput from '../hooks/useInput';
+import styled from 'styled-components';
+import { Menu, Input, Row, Col } from 'antd';
 import Router from 'next/router';
 
 import Link from 'next/link';
-import { Menu, Input, Row, Col } from 'antd';
-import UserProfile from '../components/UserProfile';
-import LoginForm from '../components/LoginForm';
 
-import styled from 'styled-components';
+import useInput from '../hooks/useInput';
+import UserProfile from './UserProfile';
+import LoginForm from './LoginForm';
 
 const SearchInput = styled(Input.Search)`
   vertical-align: middle;
@@ -43,11 +43,6 @@ const AppLayout = ({ children }) => {
             onChange={onChangeSearchInput}
             onSearch={onSearch}
           />
-        </Menu.Item>
-        <Menu.Item>
-          <Link href='/signup'>
-            <a>회원가입</a>
-          </Link>
         </Menu.Item>
       </Menu>
       <Row gutter={8}>
